@@ -1693,6 +1693,19 @@
       }
     ]
   },
+  "bc3ts.net": {
+    "_name": "爆料公社",
+    "web": [
+      {
+        "title": "動態",
+        "docs": "https://docs.rsshub.app/routes/new-media",
+        "source": [
+          "/"
+        ],
+        "target": "/bc3ts/post/list/:sort?"
+      }
+    ]
+  },
   "beijingprice.cn": {
     "_name": "北京价格",
     ".": [
@@ -2469,6 +2482,19 @@
           "/profile/:handle"
         ],
         "target": "/bsky/profile/:handle"
+      }
+    ]
+  },
+  "2bt0.com": {
+    "_name": "不太灵影视",
+    ".": [
+      {
+        "title": "影视资源下载列表",
+        "docs": "https://docs.rsshub.app/routes/multimedia",
+        "source": [
+          "/mv/"
+        ],
+        "target": "/bt0/mv/:number/:domain?"
       }
     ]
   },
@@ -9249,6 +9275,19 @@
           "/users/:id"
         ],
         "target": "/keep/user/:id"
+      }
+    ]
+  },
+  "kelownacapnews.com": {
+    "_name": "Kelowna Capital News",
+    "www": [
+      {
+        "title": "News",
+        "docs": "https://docs.rsshub.app/routes/new-media",
+        "source": [
+          "/:type"
+        ],
+        "target": "/kelownacapnews/:type"
       }
     ]
   },

@@ -6017,6 +6017,37 @@
     "name": "BBC News Labs",
     "url": "bbcnewslabs.co.uk"
   },
+  "bc3ts": {
+    "routes": {
+      "/post/list/:sort?": {
+        "path": "/post/list/:sort?",
+        "example": "/bc3ts/post/list",
+        "parameters": {
+          "sort": "排序方式，`1` 為最新，`2` 為熱門，默认為 `1`"
+        },
+        "features": {
+          "antiCrawler": true
+        },
+        "radar": [
+          {
+            "source": [
+              "web.bc3ts.net"
+            ]
+          }
+        ],
+        "name": "動態",
+        "maintainers": [
+          "TonyRL"
+        ],
+        "location": "list.ts"
+      }
+    },
+    "name": "爆料公社",
+    "url": "web.bc3ts.net",
+    "categories": [
+      "new-media"
+    ]
+  },
   "bdys": {
     "routes": {
       "/:caty?/:type?/:area?/:year?/:order?": {
@@ -8995,6 +9026,45 @@
     },
     "name": "Bluesky (bsky)",
     "url": "bsky.app"
+  },
+  "bt0": {
+    "routes": {
+      "/mv/:number/:domain?": {
+        "path": "/mv/:number/:domain?",
+        "categories": [
+          "multimedia"
+        ],
+        "example": "/mv/35575567/2",
+        "parameters": {
+          "domain": "1-9,默认 2",
+          "number": "影视详情id"
+        },
+        "features": {
+          "requireConfig": false,
+          "requirePuppeteer": false,
+          "antiCrawler": false,
+          "supportBT": true,
+          "supportPodcast": false,
+          "supportScihub": false
+        },
+        "radar": [
+          {
+            "source": [
+              "2bt0.com/mv/"
+            ]
+          }
+        ],
+        "name": "影视资源下载列表",
+        "maintainers": [
+          "miemieYaho"
+        ],
+        "description": ":::tip\n  (1-9)bt0.com 都能访问, 就拿 2bt0.com 为默认了\n  影视详情id 是`https://www.2bt0.com/mv/{id}.html`其中的 id 的值\n  可选参数`domain` 是 `https://www.{domain}bt0.com` 其中的 domain 的值,可以是 1-9,访问的都是同一个东西\n  :::",
+        "location": "mv.ts"
+      }
+    },
+    "name": "不太灵影视",
+    "url": "2bt0.com",
+    "description": ":::tip\n  (1-9)bt0.com 都指向同一个\n  :::"
   },
   "btzj": {
     "routes": {
@@ -34086,6 +34156,45 @@
     "name": "KeePass",
     "url": "keepass.info"
   },
+  "kelownacapnews": {
+    "routes": {
+      "/:type": {
+        "path": "/:type",
+        "categories": [
+          "new-media"
+        ],
+        "example": "/kelownacapnews/local-news",
+        "parameters": {
+          "type": "Type of news"
+        },
+        "features": {
+          "requireConfig": false,
+          "requirePuppeteer": false,
+          "antiCrawler": false,
+          "supportBT": false,
+          "supportPodcast": false,
+          "supportScihub": false
+        },
+        "radar": [
+          {
+            "source": [
+              "www.kelownacapnews.com/:type"
+            ],
+            "target": "/:type"
+          }
+        ],
+        "name": "News",
+        "maintainers": [
+          "hualiong"
+        ],
+        "url": "www.kelownacapnews.com",
+        "description": "`type` is as follows:\n  \n| News type     | Value         | News type    | Value        |\n| ------------- | ------------- | ------------ | ------------ |\n| News          | news          | Sports       | sports       |\n| Local News    | local-news    | Business     | business     |\n| Canadian News | national-news | Trending Now | trending-now |\n| World News    | world-news    | Opinion      | opinion      |\n| Entertainment | entertainment |              |              |",
+        "location": "news.ts"
+      }
+    },
+    "name": "Kelowna Capital News",
+    "url": "www.kelownacapnews.com"
+  },
   "kemono": {
     "routes": {
       "/:source?/:id?": {
@@ -51133,6 +51242,9 @@
           "junfengP",
           "nczitzk"
         ],
+        "features": {
+          "requirePuppeteer": true
+        },
         "description": "**原创 BT 电影**\n\n  | 国产原创 | 亚洲无码原创 | 亚洲有码原创 | 高清中文字幕 | 三级写真 | VR 视频 | 素人有码 | 欧美无码 | 韩国主播 | 动漫原创 | 综合讨论 |\n  | -------- | ------------ | ------------ | ------------ | -------- | ------- | -------- | -------- | -------- | -------- | -------- |\n  | gcyc     | yzwmyc       | yzymyc       | gqzwzm       | sjxz     | vr      | srym     | omwm     | hgzb     | dmyc     | zhtl     |\n\n  **色花图片**\n\n  | 原创自拍 | 转贴自拍 | 华人街拍 | 亚洲性爱 | 欧美性爱 | 卡通动漫 | 套图下载 |\n  | -------- | -------- | -------- | -------- | -------- | -------- | -------- |\n  | yczp     | ztzp     | hrjp     | yzxa     | omxa     | ktdm     | ttxz     |",
         "location": "index.ts"
       },
@@ -51150,6 +51262,9 @@
           "junfengP",
           "nczitzk"
         ],
+        "features": {
+          "requirePuppeteer": true
+        },
         "description": "**原创 BT 电影**\n\n  | 国产原创 | 亚洲无码原创 | 亚洲有码原创 | 高清中文字幕 | 三级写真 | VR 视频 | 素人有码 | 欧美无码 | 韩国主播 | 动漫原创 | 综合讨论 |\n  | -------- | ------------ | ------------ | ------------ | -------- | ------- | -------- | -------- | -------- | -------- | -------- |\n  | gcyc     | yzwmyc       | yzymyc       | gqzwzm       | sjxz     | vr      | srym     | omwm     | hgzb     | dmyc     | zhtl     |\n\n  **色花图片**\n\n  | 原创自拍 | 转贴自拍 | 华人街拍 | 亚洲性爱 | 欧美性爱 | 卡通动漫 | 套图下载 |\n  | -------- | -------- | -------- | -------- | -------- | -------- | -------- |\n  | yczp     | ztzp     | hrjp     | yzxa     | omxa     | ktdm     | ttxz     |",
         "location": "index.ts"
       },
@@ -51167,6 +51282,9 @@
           "junfengP",
           "nczitzk"
         ],
+        "features": {
+          "requirePuppeteer": true
+        },
         "description": "**原创 BT 电影**\n\n  | 国产原创 | 亚洲无码原创 | 亚洲有码原创 | 高清中文字幕 | 三级写真 | VR 视频 | 素人有码 | 欧美无码 | 韩国主播 | 动漫原创 | 综合讨论 |\n  | -------- | ------------ | ------------ | ------------ | -------- | ------- | -------- | -------- | -------- | -------- | -------- |\n  | gcyc     | yzwmyc       | yzymyc       | gqzwzm       | sjxz     | vr      | srym     | omwm     | hgzb     | dmyc     | zhtl     |\n\n  **色花图片**\n\n  | 原创自拍 | 转贴自拍 | 华人街拍 | 亚洲性爱 | 欧美性爱 | 卡通动漫 | 套图下载 |\n  | -------- | -------- | -------- | -------- | -------- | -------- | -------- |\n  | yczp     | ztzp     | hrjp     | yzxa     | omxa     | ktdm     | ttxz     |",
         "location": "index.ts"
       },
@@ -51184,6 +51302,9 @@
           "junfengP",
           "nczitzk"
         ],
+        "features": {
+          "requirePuppeteer": true
+        },
         "description": "**原创 BT 电影**\n\n  | 国产原创 | 亚洲无码原创 | 亚洲有码原创 | 高清中文字幕 | 三级写真 | VR 视频 | 素人有码 | 欧美无码 | 韩国主播 | 动漫原创 | 综合讨论 |\n  | -------- | ------------ | ------------ | ------------ | -------- | ------- | -------- | -------- | -------- | -------- | -------- |\n  | gcyc     | yzwmyc       | yzymyc       | gqzwzm       | sjxz     | vr      | srym     | omwm     | hgzb     | dmyc     | zhtl     |\n\n  **色花图片**\n\n  | 原创自拍 | 转贴自拍 | 华人街拍 | 亚洲性爱 | 欧美性爱 | 卡通动漫 | 套图下载 |\n  | -------- | -------- | -------- | -------- | -------- | -------- | -------- |\n  | yczp     | ztzp     | hrjp     | yzxa     | omxa     | ktdm     | ttxz     |",
         "location": "index.ts"
       },
@@ -51201,6 +51322,9 @@
           "junfengP",
           "nczitzk"
         ],
+        "features": {
+          "requirePuppeteer": true
+        },
         "description": "**原创 BT 电影**\n\n  | 国产原创 | 亚洲无码原创 | 亚洲有码原创 | 高清中文字幕 | 三级写真 | VR 视频 | 素人有码 | 欧美无码 | 韩国主播 | 动漫原创 | 综合讨论 |\n  | -------- | ------------ | ------------ | ------------ | -------- | ------- | -------- | -------- | -------- | -------- | -------- |\n  | gcyc     | yzwmyc       | yzymyc       | gqzwzm       | sjxz     | vr      | srym     | omwm     | hgzb     | dmyc     | zhtl     |\n\n  **色花图片**\n\n  | 原创自拍 | 转贴自拍 | 华人街拍 | 亚洲性爱 | 欧美性爱 | 卡通动漫 | 套图下载 |\n  | -------- | -------- | -------- | -------- | -------- | -------- | -------- |\n  | yczp     | ztzp     | hrjp     | yzxa     | omxa     | ktdm     | ttxz     |",
         "location": "index.ts"
       },

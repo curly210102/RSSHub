@@ -878,6 +878,9 @@
   "/bt0/mv/:number/:domain?": [
     "miemieYaho"
   ],
+  "/bt0/tlist/:sc/:domain?": [
+    "miemieYaho"
+  ],
   "/btzj/:category?": [
     "nczitzk"
   ],
@@ -3849,6 +3852,9 @@
   "/mydrivers/:category{.+}?": [],
   "/mydrivers/rank/:range?": [
     "nczitzk"
+  ],
+  "/myfans/user/:username": [
+    "TonyRL"
   ],
   "/myfigurecollection/activity/:category?/:language?/:latestAdditions?/:latestEdits?/:latestAlerts?/:latestPictures?": [
     "nczitzk"

@@ -1248,7 +1248,7 @@
     "_name": "AP News",
     ".": [
       {
-        "title": "RSS",
+        "title": "News",
         "docs": "https://docs.rsshub.app/routes/traditional-media",
         "source": [
           "/:rss"
@@ -1824,7 +1824,7 @@
     ]
   },
   "bilibili.com": {
-    "_name": "Bilibili",
+    "_name": "哔哩哔哩 bilibili",
     "space": [
       {
         "title": "UP 主专栏",
@@ -12116,6 +12116,14 @@
     "_name": "Ollama",
     ".": [
       {
+        "title": "Blog",
+        "docs": "https://docs.rsshub.app/routes/programming",
+        "source": [
+          "/blog"
+        ],
+        "target": "/ollama/blog"
+      },
+      {
         "title": "Models",
         "docs": "https://docs.rsshub.app/routes/programming",
         "source": [
@@ -13531,7 +13539,7 @@
     ]
   },
   "reuters.com": {
-    "_name": "Reuters 路透社",
+    "_name": "Reuters",
     ".": [
       {
         "title": "Category/Topic/Author",

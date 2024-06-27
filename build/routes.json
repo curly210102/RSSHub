@@ -4378,15 +4378,18 @@
   },
   "apnews": {
     "routes": {
-      "/rss/:rss?": {
-        "path": "/rss/:rss?",
+      "/rss/:category?": {
+        "path": "/rss/:category?",
         "categories": [
           "traditional-media",
           "popular"
         ],
         "example": "/apnews/rss/business",
         "parameters": {
-          "rss": "Route name from the first segment of the corresponding site, or `index` for the front page(default)."
+          "category": {
+            "description": "Category from the first segment of the corresponding site, or `index` for the front page.",
+            "default": "index"
+          }
         },
         "features": {
           "requireConfig": false,
@@ -4404,7 +4407,7 @@
             "target": "/rss/:rss"
           }
         ],
-        "name": "RSS",
+        "name": "News",
         "maintainers": [
           "zoenglinghou",
           "mjysci",
@@ -4415,11 +4418,15 @@
       "/topics/:topic?": {
         "path": "/topics/:topic?",
         "categories": [
-          "traditional-media"
+          "traditional-media",
+          "popular"
         ],
         "example": "/apnews/topics/apf-topnews",
         "parameters": {
-          "topic": "Topic name, can be found in URL. For example: the topic name of AP Top News [https://apnews.com/apf-topnews](https://apnews.com/apf-topnews) is `apf-topnews`, `trending-news` by default"
+          "topic": {
+            "description": "Topic name, can be found in URL. For example: the topic name of AP Top News [https://apnews.com/apf-topnews](https://apnews.com/apf-topnews) is `apf-topnews`",
+            "default": "trending-news"
+          }
         },
         "features": {
           "requireConfig": false,
@@ -6550,7 +6557,7 @@
         "example": "/bilibili/user/dynamic/2267573",
         "parameters": {
           "uid": "用户 id, 可在 UP 主主页中找到",
-          "routeParams": "额外参数；请参阅以下说明和表格"
+          "routeParams": "\n| 键           | 含义                              | 接受的值       | 默认值 |\n| ------------ | --------------------------------- | -------------- | ------ |\n| showEmoji    | 显示或隐藏表情图片                | 0/1/true/false | false  |\n| disableEmbed | 关闭内嵌视频                      | 0/1/true/false | false  |\n| useAvid      | 视频链接使用 AV 号 (默认为 BV 号) | 0/1/true/false | false  |\n| directLink   | 使用内容直链                      | 0/1/true/false | false  |\n\n用例：`/bilibili/user/dynamic/2267573/showEmoji=1&disableEmbed=1&useAvid=1`"
         },
         "features": {
           "requireConfig": [
@@ -6561,7 +6568,7 @@
             }
           ],
           "requirePuppeteer": false,
-          "antiCrawler": true,
+          "antiCrawler": false,
           "supportBT": false,
           "supportPodcast": false,
           "supportScihub": false
@@ -6581,7 +6588,6 @@
           "CaoMeiYouRen",
           "JimenezLi"
         ],
-        "description": "| 键           | 含义                              | 接受的值       | 默认值 |\n  | ------------ | --------------------------------- | -------------- | ------ |\n  | showEmoji    | 显示或隐藏表情图片                | 0/1/true/false | false  |\n  | disableEmbed | 关闭内嵌视频                      | 0/1/true/false | false  |\n  | useAvid      | 视频链接使用 AV 号 (默认为 BV 号) | 0/1/true/false | false  |\n  | directLink   | 使用内容直链                      | 0/1/true/false | false  |\n\n  用例：`/bilibili/user/dynamic/2267573/showEmoji=1&disableEmbed=1&useAvid=1`\n\n  :::tip 动态的专栏显示全文\n  动态的专栏显示全文请使用通用参数里的 `mode=fulltext`\n\n  举例: bilibili 专栏全文输出 /bilibili/user/dynamic/2267573/?mode=fulltext\n  :::",
         "location": "dynamic.ts"
       },
       "/fav/:uid/:fid/:disableEmbed?": {
@@ -7186,12 +7192,104 @@
         ],
         "example": "/bilibili/ranking/0/3/1",
         "parameters": {
-          "rid": "排行榜分区 id, 默认 0",
-          "day": "时间跨度, 可为 1 3 7 30",
-          "arc_type": "投稿时间, 可为 0(全部投稿) 1(近期投稿) , 默认 1",
-          "disableEmbed": "默认为开启内嵌视频, 任意值为关闭"
+          "rid": {
+            "description": "排行榜分区 id",
+            "default": "0",
+            "options": [
+              {
+                "label": "全站",
+                "value": "0"
+              },
+              {
+                "label": "动画",
+                "value": "1"
+              },
+              {
+                "label": "国创相关",
+                "value": "168"
+              },
+              {
+                "label": "音乐",
+                "value": "3"
+              },
+              {
+                "label": "舞蹈",
+                "value": "129"
+              },
+              {
+                "label": "游戏",
+                "value": "4"
+              },
+              {
+                "label": "科技",
+                "value": "36"
+              },
+              {
+                "label": "数码",
+                "value": "188"
+              },
+              {
+                "label": "生活",
+                "value": "160"
+              },
+              {
+                "label": "鬼畜",
+                "value": "119"
+              },
+              {
+                "label": "时尚",
+                "value": "155"
+              },
+              {
+                "label": "娱乐",
+                "value": "5"
+              },
+              {
+                "label": "影视",
+                "value": "181"
+              }
+            ]
+          },
+          "day": {
+            "description": "时间跨度",
+            "default": "3",
+            "options": [
+              {
+                "value": "1",
+                "label": "1日"
+              },
+              {
+                "value": "3",
+                "label": "3日"
+              },
+              {
+                "value": "7",
+                "label": "7日"
+              },
+              {
+                "value": "30",
+                "label": "30日"
+              }
+            ]
+          },
+          "arc_type": {
+            "description": "投稿时间",
+            "default": "1",
+            "options": [
+              {
+                "value": "0",
+                "label": "全部投稿"
+              },
+              {
+                "value": "1",
+                "label": "近期投稿"
+              }
+            ]
+          },
+          "disableEmbed": {
+            "description": "默认为开启内嵌视频, 任意值为关闭"
+          }
         },
-        "description": "| 全站 | 动画 | 国创相关 | 音乐 | 舞蹈 | 游戏 | 科技 | 数码 | 生活 | 鬼畜 | 时尚 | 娱乐 | 影视 |\n| ---- | ---- | -------- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |\n| 0    | 1    | 168      | 3    | 129  | 4    | 36   | 188  | 160  | 119  | 155  | 5    | 181  |",
         "location": "ranking.ts"
       },
       "/readlist/:listid": {
@@ -7380,7 +7478,7 @@
         "features": {
           "requireConfig": false,
           "requirePuppeteer": false,
-          "antiCrawler": true,
+          "antiCrawler": false,
           "supportBT": false,
           "supportPodcast": false,
           "supportScihub": false
@@ -7397,7 +7495,6 @@
         "maintainers": [
           "DIYgod"
         ],
-        "description": ":::tip 动态的专栏显示全文\n  可以使用 [UP 主动态](#bilibili-up-zhu-dong-tai)路由作为代替绕过反爬限制\n  :::",
         "location": "video.ts"
       },
       "/vsearch/:kw/:order?/:disableEmbed?/:tid?": {
@@ -7488,7 +7585,7 @@
         "location": "weekly-recommend.ts"
       }
     },
-    "name": "Bilibili",
+    "name": "哔哩哔哩 bilibili",
     "url": "www.bilibili.com"
   },
   "binance": {
@@ -16704,9 +16801,12 @@
         ],
         "example": "/dockerhub/build/wangqiru/ttrss",
         "parameters": {
-          "owner": "Image owner",
+          "owner": "Image owner, the owner of the official image fills in the library, for example: /dockerhub/build/library/mysql",
           "image": "Image name",
-          "tag": "Image tag，default to latest"
+          "tag": {
+            "description": "Image tag",
+            "default": "latest"
+          }
         },
         "features": {
           "requireConfig": false,
@@ -16720,7 +16820,6 @@
         "maintainers": [
           "HenryQW"
         ],
-        "description": ":::warning\n  The owner of the official image fills in the library, for example: [https://rsshub.app/dockerhub/build/library/mysql](https://rsshub.app/dockerhub/build/library/mysql)\n  :::",
         "location": "build.ts"
       },
       "/tag/:owner/:image/:limits?": {
@@ -17444,7 +17543,24 @@
         "example": "/douban/group/648102",
         "parameters": {
           "groupid": "豆瓣小组的 id",
-          "type": "缺省 最新，essence 最热，elite 精华"
+          "type": {
+            "description": "类型",
+            "default": "latest",
+            "options": [
+              {
+                "label": "最新",
+                "value": "latest"
+              },
+              {
+                "label": "最热",
+                "value": "essence"
+              },
+              {
+                "label": "精华",
+                "value": "elite"
+              }
+            ]
+          }
         },
         "features": {
           "requireConfig": false,
@@ -20033,6 +20149,36 @@
     },
     "name": "U.S. Food and Drug Administration",
     "url": "fda.gov"
+  },
+  "fediverse": {
+    "routes": {
+      "/timeline/:account": {
+        "path": "/timeline/:account",
+        "categories": [
+          "social-media",
+          "popular"
+        ],
+        "example": "/fediverse/timeline/Mastodon@mastodon.social",
+        "parameters": {
+          "account": "username@domain"
+        },
+        "features": {
+          "requireConfig": false,
+          "requirePuppeteer": false,
+          "antiCrawler": false,
+          "supportBT": false,
+          "supportPodcast": false,
+          "supportScihub": false
+        },
+        "name": "Timeline",
+        "maintainers": [
+          "DIYgod"
+        ],
+        "location": "timeline.ts"
+      }
+    },
+    "name": "Fediverse",
+    "url": "fediverse.observer"
   },
   "feng": {
     "routes": {
@@ -22772,7 +22918,24 @@
         "parameters": {
           "user": "GitHub username",
           "repo": "GitHub repo name",
-          "state": "the state of the issues. Can be either `open`, `closed`, or `all`. Default: `open`.",
+          "state": {
+            "description": "the state of the issues.",
+            "default": "open",
+            "options": [
+              {
+                "label": "Open",
+                "value": "open"
+              },
+              {
+                "label": "Closed",
+                "value": "closed"
+              },
+              {
+                "label": "All",
+                "value": "all"
+              }
+            ]
+          },
           "labels": "a list of comma separated label names"
         },
         "radar": [
@@ -31332,6 +31495,14 @@
               "name": "IG_PROXY",
               "optional": true,
               "description": ""
+            },
+            {
+              "name": "IG_USERNAME",
+              "description": "Instagram username"
+            },
+            {
+              "name": "IG_PASSWORD",
+              "description": "Instagram password, due to [Instagram Private API](https://github.com/dilame/instagram-private-api) restrictions, you have to setup your credentials on the server. 2FA is not supported."
             }
           ],
           "requirePuppeteer": false,
@@ -31345,7 +31516,6 @@
           "oppilate",
           "DIYgod"
         ],
-        "description": ":::warning\nDue to [Instagram Private API](https://github.com/dilame/instagram-private-api) restrictions, you have to setup your credentials on the server. 2FA is not supported. See [deployment guide](https://docs.rsshub.app/deploy/) for more.\n:::",
         "location": "private-api/index.ts"
       },
       "/2/:category/:key": {
@@ -32073,6 +32243,12 @@
           "popular"
         ],
         "url": "www.javbus.com",
+        "example": "/javbus/star/rwt",
+        "parameters": {
+          "path": {
+            "description": "Any path of list page on javbus"
+          }
+        },
         "location": "index.ts"
       }
     },
@@ -32859,8 +33035,7 @@
       "/topic/:id/:showUid?": {
         "path": "/topic/:id/:showUid?",
         "categories": [
-          "social-media",
-          "popular"
+          "social-media"
         ],
         "example": "/jike/topic/556688fae4b00c57d9dd46ee",
         "parameters": {
@@ -32893,8 +33068,7 @@
       "/user/:id": {
         "path": "/user/:id",
         "categories": [
-          "social-media",
-          "popular"
+          "social-media"
         ],
         "example": "/jike/user/3EE02BC9-C5B3-4209-8750-4ED1EE0F67BB",
         "parameters": {
@@ -43897,6 +44071,25 @@
   },
   "ollama": {
     "routes": {
+      "/blog": {
+        "path": "/blog",
+        "categories": [
+          "programming"
+        ],
+        "example": "/ollama/blog",
+        "radar": [
+          {
+            "source": [
+              "ollama.com/blog"
+            ]
+          }
+        ],
+        "name": "Blog",
+        "maintainers": [
+          "gavrilov"
+        ],
+        "location": "blog.ts"
+      },
       "/library": {
         "path": "/library",
         "categories": [
@@ -43912,7 +44105,8 @@
         ],
         "name": "Models",
         "maintainers": [
-          "Nick22nd"
+          "Nick22nd",
+          "gavrilov"
         ],
         "location": "models.ts"
       }
@@ -46129,7 +46323,67 @@
         ],
         "example": "/pixiv/ranking/week",
         "parameters": {
-          "mode": "rank type",
+          "mode": {
+            "description": "rank type",
+            "options": [
+              {
+                "value": "day",
+                "label": "daily rank"
+              },
+              {
+                "value": "week",
+                "label": "weekly rank"
+              },
+              {
+                "value": "month",
+                "label": "monthly rank"
+              },
+              {
+                "value": "day_male",
+                "label": "male rank"
+              },
+              {
+                "value": "day_felame",
+                "label": "female rank"
+              },
+              {
+                "value": "day_ai",
+                "label": "AI-generated work Rankings"
+              },
+              {
+                "value": "week_original",
+                "label": "original rank"
+              },
+              {
+                "value": "week_rookie",
+                "label": "rookie user rank"
+              },
+              {
+                "value": "day_r18",
+                "label": "R-18 daily rank"
+              },
+              {
+                "value": "day_r18_ai",
+                "label": "R-18 AI-generated work"
+              },
+              {
+                "value": "day_male_r18",
+                "label": "R-18 male rank"
+              },
+              {
+                "value": "day_female_r18",
+                "label": "R-18 female rank"
+              },
+              {
+                "value": "week_r18",
+                "label": "R-18 weekly rank"
+              },
+              {
+                "value": "week_r18g",
+                "label": "R-18G rank"
+              }
+            ]
+          },
           "date": "format: `2018-4-25`"
         },
         "features": {
@@ -46144,7 +46398,6 @@
         "maintainers": [
           "EYHN"
         ],
-        "description": "| daily rank | weekly rank | monthly rank | male rank | female rank | AI-generated work Rankings | original rank  | rookie user rank |\n  | ---------- | ----------- | ------------ | --------- | ----------- | -------------------------- | -------------- | ---------------- |\n  | day        | week        | month        | day_male | day_female | day_ai                    | week_original | week_rookie     |\n\n  | R-18 daily rank | R-18 AI-generated work | R-18 male rank | R-18 female rank | R-18 weekly rank | R-18G rank |\n  | --------------- | ---------------------- | -------------- | ---------------- | ---------------- | ---------- |\n  | day_r18        | day_r18_ai           | day_male_r18 | day_female_r18 | week_r18        | week_r18g |",
         "location": "ranking.ts"
       },
       "/search/:keyword/:order?/:mode?": {
@@ -46153,11 +46406,41 @@
           "social-media",
           "popular"
         ],
-        "example": "/pixiv/search/Nezuko/popular/2",
+        "example": "/pixiv/search/Nezuko/popular",
         "parameters": {
           "keyword": "keyword",
-          "order": "rank mode, empty or other for time order, popular for popular order",
-          "mode": "filte R18 content"
+          "order": {
+            "description": "rank mode, empty or other for time order, popular for popular order",
+            "default": "date",
+            "options": [
+              {
+                "label": "time order",
+                "value": "date"
+              },
+              {
+                "label": "popular order",
+                "value": "popular"
+              }
+            ]
+          },
+          "mode": {
+            "description": "filte R18 content",
+            "default": "no",
+            "options": [
+              {
+                "label": "only not R18",
+                "value": "safe"
+              },
+              {
+                "label": "only R18",
+                "value": "r18"
+              },
+              {
+                "label": "no filter",
+                "value": "no"
+              }
+            ]
+          }
         },
         "features": {
           "requireConfig": false,
@@ -46171,7 +46454,6 @@
         "maintainers": [
           "DIYgod"
         ],
-        "description": "| only not R18 | only R18 | no filter      |\n  | ------------ | -------- | -------------- |\n  | safe         | r18      | empty or other |",
         "location": "search.ts"
       },
       "/user/:id": {
@@ -49326,7 +49608,8 @@
       "/:category/:topic?": {
         "path": "/:category/:topic?",
         "categories": [
-          "traditional-media"
+          "traditional-media",
+          "popular"
         ],
         "example": "/reuters/world/us",
         "parameters": {
@@ -49382,7 +49665,7 @@
         "location": "investigates.ts"
       }
     },
-    "name": "Reuters 路透社",
+    "name": "Reuters",
     "url": "reuters.com",
     "description": ":::tip\nYou can use `sophi=true` query parameter to invoke the **experimental** method, which can, if possible, fetch more articles(between 20 and 100) with `limit` given. But some articles from the old method might not be available.\n:::"
   },
@@ -49574,7 +49857,20 @@
         ],
         "example": "/rsshub/routes/en",
         "parameters": {
-          "lang": "Language, `zh` means Chinese docs, other values or null means English docs, `en` by default"
+          "lang": {
+            "description": "Language",
+            "options": [
+              {
+                "label": "Chinese",
+                "value": "zh"
+              },
+              {
+                "label": "English",
+                "value": "en"
+              }
+            ],
+            "default": "en"
+          }
         },
         "radar": [
           {
@@ -51579,8 +51875,7 @@
       "/user/:uid": {
         "path": "/user/:uid",
         "categories": [
-          "multimedia",
-          "popular"
+          "multimedia"
         ],
         "example": "/sehuatang/user/411096",
         "parameters": {
@@ -57372,7 +57667,7 @@
         "example": "/telegram/channel/awesomeDIYgod/searchQuery=twitter",
         "parameters": {
           "username": "channel username",
-          "routeParams": "extra parameters, see the table below"
+          "routeParams": "extra parameters, see the table below\n| Key                    | Description                                                           | Accepts                                            | Defaults to  |\n| ---------------------- | --------------------------------------------------------------------- | -------------------------------------------------- | ------------ |\n| showLinkPreview        | Show the link preview from Telegram                                   | 0/1/true/false                                     | true         |\n| showViaBot             | For messages sent via bot, show the bot                               | 0/1/true/false                                     | true         |\n| showReplyTo            | For reply messages, show the target of the reply                      | 0/1/true/false                                     | true         |\n| showFwdFrom            | For forwarded messages, show the forwarding source                    | 0/1/true/false                                     | true         |\n| showFwdFromAuthor      | For forwarded messages, show the author of the forwarding source      | 0/1/true/false                                     | true         |\n| showInlineButtons      | Show inline buttons                                                   | 0/1/true/false                                     | false        |\n| showMediaTagInTitle    | Show media tags in the title                                          | 0/1/true/false                                     | true         |\n| showMediaTagAsEmoji    | Show media tags as emoji                                              | 0/1/true/false                                     | true         |\n| showHashtagAsHyperlink | Show hashtags as hyperlinks (`https://t.me/s/channel?q=%23hashtag`) | 0/1/true/false                                     | true         |\n| includeFwd             | Include forwarded messages                                            | 0/1/true/false                                     | true         |\n| includeReply           | Include reply messages                                                | 0/1/true/false                                     | true         |\n| includeServiceMsg      | Include service messages (e.g. message pinned, channel photo updated) | 0/1/true/false                                     | true         |\n| includeUnsupportedMsg  | Include messages unsupported by t.me                                  | 0/1/true/false                                     | false        |\n| searchQuery            | search query                                                          | keywords; replace `#hashtag` with `%23hashtag` | (no keyword) |\n\nSpecify different option values than default values can meet different needs, URL\n\n```\nhttps://rsshub.app/telegram/channel/NewlearnerChannel/showLinkPreview=0&showViaBot=0&showReplyTo=0&showFwdFrom=0&showFwdFromAuthor=0&showInlineButtons=0&showMediaTagInTitle=1&showMediaTagAsEmoji=1&includeFwd=0&includeReply=1&includeServiceMsg=0&includeUnsupportedMsg=0\n```\n\ngenerates an RSS without any link previews and annoying metadata, with emoji media tags in the title, without forwarded messages (but with reply messages), and without messages you don't care about (service messages and unsupported messages), for people who prefer pure subscriptions.\n\nFor backward compatibility reasons, invalid `routeParams` will be treated as `searchQuery` .\n"
         },
         "features": {
           "requireConfig": false,
@@ -57395,7 +57690,7 @@
           "DIYgod",
           "Rongronggg9"
         ],
-        "description": "\n  | Key                    | Description                                                           | Accepts                                            | Defaults to  |\n  | ---------------------- | --------------------------------------------------------------------- | -------------------------------------------------- | ------------ |\n  | showLinkPreview        | Show the link preview from Telegram                                   | 0/1/true/false                                     | true         |\n  | showViaBot             | For messages sent via bot, show the bot                               | 0/1/true/false                                     | true         |\n  | showReplyTo            | For reply messages, show the target of the reply                      | 0/1/true/false                                     | true         |\n  | showFwdFrom            | For forwarded messages, show the forwarding source                    | 0/1/true/false                                     | true         |\n  | showFwdFromAuthor      | For forwarded messages, show the author of the forwarding source      | 0/1/true/false                                     | true         |\n  | showInlineButtons      | Show inline buttons                                                   | 0/1/true/false                                     | false        |\n  | showMediaTagInTitle    | Show media tags in the title                                          | 0/1/true/false                                     | true         |\n  | showMediaTagAsEmoji    | Show media tags as emoji                                              | 0/1/true/false                                     | true         |\n  | showHashtagAsHyperlink | Show hashtags as hyperlinks (`https://t.me/s/channel?q=%23hashtag`) | 0/1/true/false                                     | true         |\n  | includeFwd             | Include forwarded messages                                            | 0/1/true/false                                     | true         |\n  | includeReply           | Include reply messages                                                | 0/1/true/false                                     | true         |\n  | includeServiceMsg      | Include service messages (e.g. message pinned, channel photo updated) | 0/1/true/false                                     | true         |\n  | includeUnsupportedMsg  | Include messages unsupported by t.me                                  | 0/1/true/false                                     | false        |\n  | searchQuery            | search query                                                          | keywords; replace `#hashtag` with `%23hashtag` | (no keyword) |\n\n  Specify different option values than default values can meet different needs, URL\n\n  ```\n  https://rsshub.app/telegram/channel/NewlearnerChannel/showLinkPreview=0&showViaBot=0&showReplyTo=0&showFwdFrom=0&showFwdFromAuthor=0&showInlineButtons=0&showMediaTagInTitle=1&showMediaTagAsEmoji=1&includeFwd=0&includeReply=1&includeServiceMsg=0&includeUnsupportedMsg=0\n  ```\n\n  generates an RSS without any link previews and annoying metadata, with emoji media tags in the title, without forwarded messages (but with reply messages), and without messages you don't care about (service messages and unsupported messages), for people who prefer pure subscriptions.\n\n  :::tip\n  For backward compatibility reasons, invalid `routeParams` will be treated as `searchQuery` .\n\n  Due to Telegram restrictions, some channels involving pornography, copyright, and politics cannot be subscribed. You can confirm by visiting `https://t.me/s/:username`.\n  :::",
+        "description": "\n  :::tip\n  Due to Telegram restrictions, some channels involving pornography, copyright, and politics cannot be subscribed. You can confirm by visiting `https://t.me/s/:username`.\n  :::",
         "location": "channel.ts"
       },
       "/stickerpack/:name": {
@@ -63129,6 +63424,7 @@
           "requireConfig": [
             {
               "name": "WEIBO_COOKIES",
+              "optional": true,
               "description": ""
             }
           ],
@@ -63169,6 +63465,7 @@
           "requireConfig": [
             {
               "name": "WEIBO_COOKIES",
+              "optional": true,
               "description": ""
             }
           ],
@@ -63298,6 +63595,7 @@
           "requireConfig": [
             {
               "name": "WEIBO_COOKIES",
+              "optional": true,
               "description": ""
             }
           ],
@@ -63335,7 +63633,13 @@
           "routeParams": "额外参数；请参阅上面的说明和表格；特别地，当 `routeParams=1` 时开启微博视频显示"
         },
         "features": {
-          "requireConfig": false,
+          "requireConfig": [
+            {
+              "name": "WEIBO_COOKIES",
+              "optional": true,
+              "description": ""
+            }
+          ],
           "requirePuppeteer": false,
           "antiCrawler": true,
           "supportBT": false,
@@ -63358,7 +63662,7 @@
           "iplusx",
           "Rongronggg9"
         ],
-        "description": ":::warning\n  部分博主仅登录可见，未提供 Cookie 的情况下不支持订阅，可以通过打开 `https://m.weibo.cn/u/:uid` 验证。如需要订阅该部分博主，可配置 Cookie 后订阅。\n\n  未提供 Cookie 的情况下偶尔会触发反爬限制，提供 Cookie 可缓解该情况。\n\n  微博用户 Cookie 的配置可参照部署文档\n  :::",
+        "description": ":::warning\n  部分博主仅登录可见，未提供 Cookie 的情况下不支持订阅，可以通过打开 `https://m.weibo.cn/u/:uid` 验证\n  :::",
         "location": "user.ts"
       },
       "/oasis/user/:userid": {
@@ -65208,8 +65512,7 @@
           "/:type/:id/:all/:shownote?"
         ],
         "categories": [
-          "multimedia",
-          "popular"
+          "multimedia"
         ],
         "example": "/ximalaya/album/299146",
         "parameters": {

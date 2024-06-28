@@ -827,6 +827,9 @@
   "/bloomberg/:site?": [
     "bigfei"
   ],
+  "/bluearchive/news/:server/:type?": [
+    "equt"
+  ],
   "/bluestacks/release/5": [
     "TonyRL"
   ],
@@ -2997,6 +3000,9 @@
   "/hypergryph/arknights/announce/:platform?/:group?": [
     "swwind"
   ],
+  "/hypergryph/arknights/arktca": [
+    "Bendancom"
+  ],
   "/hypergryph/arknights/japan": [
     "ofyark"
   ],
@@ -3722,6 +3728,9 @@
   ],
   "/medsci/:sid?/:tid?": [
     "nczitzk"
+  ],
+  "/meituan/tech": [
+    "ktKongTong"
   ],
   "/metacritic/:type?/:sort?/:filter?": [],
   "/meteor/boards": [

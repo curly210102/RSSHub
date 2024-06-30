@@ -4988,6 +4988,47 @@
     "name": "Asian to lick",
     "url": "asiantolick.com"
   },
+  "asmr-200": {
+    "routes": {
+      "/works/:order?/:subtitle?/:sort?": {
+        "path": "/works/:order?/:subtitle?/:sort?",
+        "categories": [
+          "multimedia"
+        ],
+        "example": "/asmr-200/works",
+        "features": {
+          "requireConfig": false,
+          "requirePuppeteer": false,
+          "antiCrawler": true,
+          "supportBT": false,
+          "supportPodcast": false,
+          "supportScihub": false
+        },
+        "parameters": {
+          "order": "排序字段，默认按照资源的收录日期来排序，详见下表",
+          "sort": "排序方式，可选 `asc` 和 `desc` ，默认倒序",
+          "subtitle": "筛选带字幕音频，可选 `0` 和 `1` ，默认关闭"
+        },
+        "radar": [
+          {
+            "source": [
+              "asmr-200.com"
+            ],
+            "target": "asmr-200/works"
+          }
+        ],
+        "name": "最新收录",
+        "maintainers": [
+          "hualiong"
+        ],
+        "url": "asmr-200.com",
+        "description": "| 发售日期 | 收录日期 | 销量 | 价格 | 评价 | 随机 | RJ号 |\n| ---- | ---- | ---- | ---- | ---- | ---- | ---- |\n| release | create_date | dl_count | price | rate_average_2dp | random | id |",
+        "location": "index.ts"
+      }
+    },
+    "name": "ASMR Online",
+    "url": "asmr-200.com"
+  },
   "asus": {
     "routes": {
       "/bios/:model": {
@@ -15714,6 +15755,45 @@
     },
     "name": "雨苁博客",
     "url": "ddosi.org"
+  },
+  "deadbydaylight": {
+    "routes": {
+      "/blog": {
+        "path": "/blog",
+        "categories": [
+          "game"
+        ],
+        "example": "/deadbydaylight/blog",
+        "parameters": {},
+        "features": {
+          "requireConfig": false,
+          "requirePuppeteer": false,
+          "antiCrawler": false,
+          "supportBT": false,
+          "supportPodcast": false,
+          "supportScihub": false
+        },
+        "radar": [
+          {
+            "source": [
+              "deadbydaylight.com/news"
+            ],
+            "target": "/news"
+          }
+        ],
+        "name": "Latest News",
+        "maintainers": [
+          "NeverBehave"
+        ],
+        "location": "index.ts"
+      }
+    },
+    "name": "DeadbyDaylight",
+    "url": "deadbydaylight.com",
+    "description": "\n      DeadbyDaylight Official\n    ",
+    "zh": {
+      "name": "黎明杀机"
+    }
   },
   "deadline": {
     "routes": {
@@ -31650,6 +31730,105 @@
     },
     "name": "Instructables",
     "url": "instructables.com"
+  },
+  "investor": {
+    "routes": {
+      "/:category{.+}?": {
+        "path": "/:category{.+}?",
+        "name": "分类",
+        "url": "investor.org.cn",
+        "maintainers": [
+          "nczitzk"
+        ],
+        "example": "/investor/information_release/news_release_from_authorities/zjhfb",
+        "parameters": {
+          "category": "分类，默认为证监会发布 `information_release/news_release_from_authorities/zjhfb`，可在对应分类页 URL 中找到"
+        },
+        "description": ":::tip\n  若订阅 [证监会发布](https://www.investor.org.cn/information_release/news_release_from_authorities/zjhfb/)，网址为 `https://www.investor.org.cn/information_release/news_release_from_authorities/zjhfb/`。截取 `https://www.investor.org.cn/` 到末尾 `/` 的部分 `information_release/news_release_from_authorities/zjhfb` 作为参数填入，此时路由为 [`/investor/information_release/news_release_from_authorities/zjhfb`](https://rsshub.app/investor/information_release/news_release_from_authorities/zjhfb)。\n  :::\n\n  #### [权威发布](https://www.investor.org.cn/information_release/news_release_from_authorities/)\n\n  | [证监会发布](https://www.investor.org.cn/information_release/news_release_from_authorities/zjhfb/)                                                                  | [证券交易所发布](https://www.investor.org.cn/information_release/news_release_from_authorities/hsjysfb/)                                                                | [期货交易所发布](https://www.investor.org.cn/information_release/news_release_from_authorities/qhjysfb/)                                                                | [行业协会发布](https://www.investor.org.cn/information_release/news_release_from_authorities/hyxhfb/)                                                                 | [其他](https://www.investor.org.cn/information_release/news_release_from_authorities/otner/)                                                                        |\n  | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |\n  | [/investor/information_release/news_release_from_authorities/zjhfb/](https://rsshub.app/investor/investor/information_release/news_release_from_authorities/zjhfb/) | [/investor/information_release/news_release_from_authorities/hsjysfb/](https://rsshub.app/investor/investor/information_release/news_release_from_authorities/hsjysfb/) | [/investor/information_release/news_release_from_authorities/qhjysfb/](https://rsshub.app/investor/investor/information_release/news_release_from_authorities/qhjysfb/) | [/investor/information_release/news_release_from_authorities/hyxhfb/](https://rsshub.app/investor/investor/information_release/news_release_from_authorities/hyxhfb/) | [/investor/information_release/news_release_from_authorities/otner/](https://rsshub.app/investor/investor/information_release/news_release_from_authorities/otner/) |\n\n  #### [市场资讯](https://www.investor.org.cn/information_release/market_news/)\n\n  | [市场资讯](https://www.investor.org.cn/information_release/market_news/)                                   |\n  | ---------------------------------------------------------------------------------------------------------- |\n  | [/investor/information_release/market_news/](https://rsshub.app/investor/information_release/market_news/) |\n\n  #### [政策解读](https://www.investor.org.cn/information_release/policy_interpretation/)\n\n  | [政策解读](https://www.investor.org.cn/information_release/policy_interpretation/)                                  |\n  | ------------------------------------------------------------------------------------------------------------------- |\n  | [/investorinformation_release/policy_interpretation/](https://rsshub.appinformation_release/policy_interpretation/) |\n\n  #### [国际交流](https://www.investor.org.cn/information_release/international_communication/)\n\n  | [国际交流](https://www.investor.org.cn/information_release/international_communication/)                                          |\n  | --------------------------------------------------------------------------------------------------------------------------------- |\n  | [/investor/information_release/international_communication/](https://rsshub.app/information_release/international_communication/) |\n  ",
+        "categories": [
+          "finance"
+        ],
+        "features": {
+          "requireConfig": false,
+          "requirePuppeteer": false,
+          "antiCrawler": false,
+          "supportRadar": true,
+          "supportBT": false,
+          "supportPodcast": false,
+          "supportScihub": false
+        },
+        "radar": [
+          {
+            "source": [
+              "investor.org.cn/:category"
+            ]
+          },
+          {
+            "title": "权威发布 - 证监会发布",
+            "source": [
+              "www.investor.org.cn/information_release/news_release_from_authorities/zjhfb/"
+            ],
+            "target": "/information_release/news_release_from_authorities/zjhfb/"
+          },
+          {
+            "title": "权威发布 - 证券交易所发布",
+            "source": [
+              "www.investor.org.cn/information_release/news_release_from_authorities/hsjysfb/"
+            ],
+            "target": "/information_release/news_release_from_authorities/hsjysfb/"
+          },
+          {
+            "title": "权威发布 - 期货交易所发布",
+            "source": [
+              "www.investor.org.cn/information_release/news_release_from_authorities/qhjysfb/"
+            ],
+            "target": "/information_release/news_release_from_authorities/qhjysfb/"
+          },
+          {
+            "title": "权威发布 - 行业协会发布",
+            "source": [
+              "www.investor.org.cn/information_release/news_release_from_authorities/hyxhfb/"
+            ],
+            "target": "/information_release/news_release_from_authorities/hyxhfb/"
+          },
+          {
+            "title": "权威发布 - 其他",
+            "source": [
+              "www.investor.org.cn/information_release/news_release_from_authorities/otner/"
+            ],
+            "target": "/information_release/news_release_from_authorities/otner/"
+          },
+          {
+            "title": "市场资讯",
+            "source": [
+              "www.investor.org.cn/information_release/market_news/"
+            ],
+            "target": "/information_release/market_news/"
+          },
+          {
+            "title": "政策解读",
+            "source": [
+              "www.investor.org.cn/information_release/policy_interpretation/"
+            ],
+            "target": "/information_release/policy_interpretation/"
+          },
+          {
+            "title": "国际交流",
+            "source": [
+              "www.investor.org.cn/information_release/international_communication/"
+            ],
+            "target": "/information_release/international_communication/"
+          }
+        ],
+        "location": "index.ts"
+      }
+    },
+    "name": "中国投资者网",
+    "url": "investor.org.cn",
+    "categories": [
+      "finance"
+    ],
+    "description": ""
   },
   "ippa": {
     "routes": {
@@ -49529,6 +49708,35 @@
     "name": "Rawkuma",
     "url": "rawkuma.com"
   },
+  "raycast": {
+    "routes": {
+      "/changelog": {
+        "path": "/changelog",
+        "name": "Changelog",
+        "categories": [
+          "program-update"
+        ],
+        "example": "/raycast/changelog",
+        "features": {
+          "requireConfig": false,
+          "requirePuppeteer": false,
+          "antiCrawler": false,
+          "supportBT": false,
+          "supportPodcast": false,
+          "supportScihub": false
+        },
+        "maintainers": [
+          "equt"
+        ],
+        "location": "changelog.ts"
+      }
+    },
+    "name": "Raycast",
+    "url": "raycast.com",
+    "categories": [
+      "program-update"
+    ]
+  },
   "reactiflux": {
     "routes": {
       "/transcripts": {
@@ -57766,7 +57974,7 @@
         "example": "/telegram/channel/awesomeDIYgod/searchQuery=twitter",
         "parameters": {
           "username": "channel username",
-          "routeParams": "extra parameters, see the table below\n| Key                    | Description                                                           | Accepts                                            | Defaults to  |\n| ---------------------- | --------------------------------------------------------------------- | -------------------------------------------------- | ------------ |\n| showLinkPreview        | Show the link preview from Telegram                                   | 0/1/true/false                                     | true         |\n| showViaBot             | For messages sent via bot, show the bot                               | 0/1/true/false                                     | true         |\n| showReplyTo            | For reply messages, show the target of the reply                      | 0/1/true/false                                     | true         |\n| showFwdFrom            | For forwarded messages, show the forwarding source                    | 0/1/true/false                                     | true         |\n| showFwdFromAuthor      | For forwarded messages, show the author of the forwarding source      | 0/1/true/false                                     | true         |\n| showInlineButtons      | Show inline buttons                                                   | 0/1/true/false                                     | false        |\n| showMediaTagInTitle    | Show media tags in the title                                          | 0/1/true/false                                     | true         |\n| showMediaTagAsEmoji    | Show media tags as emoji                                              | 0/1/true/false                                     | true         |\n| showHashtagAsHyperlink | Show hashtags as hyperlinks (`https://t.me/s/channel?q=%23hashtag`) | 0/1/true/false                                     | true         |\n| includeFwd             | Include forwarded messages                                            | 0/1/true/false                                     | true         |\n| includeReply           | Include reply messages                                                | 0/1/true/false                                     | true         |\n| includeServiceMsg      | Include service messages (e.g. message pinned, channel photo updated) | 0/1/true/false                                     | true         |\n| includeUnsupportedMsg  | Include messages unsupported by t.me                                  | 0/1/true/false                                     | false        |\n| searchQuery            | search query                                                          | keywords; replace `#hashtag` with `%23hashtag` | (no keyword) |\n\nSpecify different option values than default values can meet different needs, URL\n\n```\nhttps://rsshub.app/telegram/channel/NewlearnerChannel/showLinkPreview=0&showViaBot=0&showReplyTo=0&showFwdFrom=0&showFwdFromAuthor=0&showInlineButtons=0&showMediaTagInTitle=1&showMediaTagAsEmoji=1&includeFwd=0&includeReply=1&includeServiceMsg=0&includeUnsupportedMsg=0\n```\n\ngenerates an RSS without any link previews and annoying metadata, with emoji media tags in the title, without forwarded messages (but with reply messages), and without messages you don't care about (service messages and unsupported messages), for people who prefer pure subscriptions.\n\nFor backward compatibility reasons, invalid `routeParams` will be treated as `searchQuery` .\n"
+          "routeParams": "extra parameters, see the table below\n| Key                    | Description                                                           | Accepts                                            | Defaults to  |\n| :--------------------: | :-------------------------------------------------------------------: | :------------------------------------------------: | :----------: |\n| showLinkPreview        | Show the link preview from Telegram                                   | 0/1/true/false                                     | true         |\n| showViaBot             | For messages sent via bot, show the bot                               | 0/1/true/false                                     | true         |\n| showReplyTo            | For reply messages, show the target of the reply                      | 0/1/true/false                                     | true         |\n| showFwdFrom            | For forwarded messages, show the forwarding source                    | 0/1/true/false                                     | true         |\n| showFwdFromAuthor      | For forwarded messages, show the author of the forwarding source      | 0/1/true/false                                     | true         |\n| showInlineButtons      | Show inline buttons                                                   | 0/1/true/false                                     | false        |\n| showMediaTagInTitle    | Show media tags in the title                                          | 0/1/true/false                                     | true         |\n| showMediaTagAsEmoji    | Show media tags as emoji                                              | 0/1/true/false                                     | true         |\n| showHashtagAsHyperlink | Show hashtags as hyperlinks (`https://t.me/s/channel?q=%23hashtag`) | 0/1/true/false                                     | true         |\n| includeFwd             | Include forwarded messages                                            | 0/1/true/false                                     | true         |\n| includeReply           | Include reply messages                                                | 0/1/true/false                                     | true         |\n| includeServiceMsg      | Include service messages (e.g. message pinned, channel photo updated) | 0/1/true/false                                     | true         |\n| includeUnsupportedMsg  | Include messages unsupported by t.me                                  | 0/1/true/false                                     | false        |\n| searchQuery            | search query                                                          | keywords; replace `#hashtag` with `%23hashtag` | (no keyword) |\n\nSpecify different option values than default values can meet different needs, URL\n\n```\nhttps://rsshub.app/telegram/channel/NewlearnerChannel/showLinkPreview=0&showViaBot=0&showReplyTo=0&showFwdFrom=0&showFwdFromAuthor=0&showInlineButtons=0&showMediaTagInTitle=1&showMediaTagAsEmoji=1&includeFwd=0&includeReply=1&includeServiceMsg=0&includeUnsupportedMsg=0\n```\n\ngenerates an RSS without any link previews and annoying metadata, with emoji media tags in the title, without forwarded messages (but with reply messages), and without messages you don't care about (service messages and unsupported messages), for people who prefer pure subscriptions.\n\nFor backward compatibility reasons, invalid `routeParams` will be treated as `searchQuery` .\n"
         },
         "features": {
           "requireConfig": false,
@@ -62235,12 +62443,12 @@
   },
   "utgd": {
     "routes": {
-      "/:category?": {
-        "path": "/:category?",
+      "/category/:category?": {
+        "path": "/category/:category?",
         "categories": [
           "new-media"
         ],
-        "example": "/utgd/method",
+        "example": "/utgd/category/method",
         "parameters": {
           "category": "分类，可在对应分类页的 URL 中找到，默认为方法"
         },
@@ -62258,7 +62466,7 @@
               "utgd.net/category/s/:category",
               "utgd.net/"
             ],
-            "target": "/:category"
+            "target": "/category/:category"
           }
         ],
         "name": "分类",

@@ -479,6 +479,9 @@
     "TonyRL"
   ],
   "/asiantolick/:category{.+}?": [],
+  "/asmr-200/works/:order?/:subtitle?/:sort?": [
+    "hualiong"
+  ],
   "/asus/bios/:model": [
     "Fatpandac"
   ],
@@ -1502,6 +1505,9 @@
   "/ddosi/category/:category?": [],
   "/ddosi/": [
     "XinRoom"
+  ],
+  "/deadbydaylight/blog": [
+    "NeverBehave"
   ],
   "/deadline/": [
     "TonyRL"
@@ -3123,6 +3129,9 @@
   ],
   "/instructables/projects/:category?": [
     "wolfg1969"
+  ],
+  "/investor/:category{.+}?": [
+    "nczitzk"
   ],
   "/ippa/": [
     "cnkmmk"
@@ -4901,6 +4910,9 @@
   "/rawkuma/manga/:id": [
     "nczitzk"
   ],
+  "/raycast/changelog": [
+    "equt"
+  ],
   "/reactiflux/transcripts": [
     "nczitzk"
   ],
@@ -6150,7 +6162,7 @@
     "jasongzy"
   ],
   "/usts/jwch/:type?": [],
-  "/utgd/:category?": [
+  "/utgd/category/:category?": [
     "nczitzk"
   ],
   "/utgd/timeline": [

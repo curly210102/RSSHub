@@ -25983,7 +25983,7 @@
             "target": "/gov/stats/*path"
           }
         ],
-        "description": "::: tip\n    路径处填写对应页面 URL 中 `http://www.stats.gov.cn/` 后的字段。下面是一个例子。\n\n    若订阅 [数据 > 数据解读](http://www.stats.gov.cn/sj/sjjd/)\n    则将对应页面 URL `http://www.stats.gov.cn/sj/sjjd/` 中 `http://www.stats.gov.cn/` 后的字段 `sj/sjjd` 作为路径填入。\n    此时路由为 [`/gov/stats/sj/sjjd`](https://rsshub.app/gov/stats/sj/sjjd)\n\n    若订阅 [新闻 > 时政要闻 > 中央精神](http://www.stats.gov.cn/xw/szyw/zyjs/)\n    则将对应页面 URL `http://www.stats.gov.cn/xw/szyw/zyjs/` 中 `http://www.stats.gov.cn/`\n    后的字段 `xw/szyw/zyjs` 作为路径填入。此时路由为 [`/gov/stats/xw/szyw/zyjs`](https://rsshub.app/gov/stats/xw/szyw/zyjs)\n    :::",
+        "description": "::: tip\n路径处填写对应页面 URL 中 `http://www.stats.gov.cn/` 后的字段。下面是一个例子。\n\n若订阅 [数据 > 数据解读](http://www.stats.gov.cn/sj/sjjd/)\n则将对应页面 URL `http://www.stats.gov.cn/sj/sjjd/` 中 `http://www.stats.gov.cn/` 后的字段 `sj/sjjd` 作为路径填入。\n此时路由为 [`/gov/stats/sj/sjjd`](https://rsshub.app/gov/stats/sj/sjjd)\n\n若订阅 [新闻 > 时政要闻 > 中央精神](http://www.stats.gov.cn/xw/szyw/zyjs/)\n则将对应页面 URL `http://www.stats.gov.cn/xw/szyw/zyjs/` 中 `http://www.stats.gov.cn/`\n后的字段 `xw/szyw/zyjs` 作为路径填入。此时路由为 [`/gov/stats/xw/szyw/zyjs`](https://rsshub.app/gov/stats/xw/szyw/zyjs)\n:::",
         "location": "stats/index.ts"
       },
       "/suzhou/doc": {
@@ -40963,6 +40963,32 @@
     "name": "壹蘋新聞網",
     "url": "tw.nextapple.com"
   },
+  "nextjs": {
+    "routes": {
+      "/blog": {
+        "path": "/blog",
+        "name": "Blog",
+        "categories": [
+          "program-update"
+        ],
+        "maintainers": [
+          "equt"
+        ],
+        "example": "/nextjs/blog",
+        "features": {
+          "requireConfig": false,
+          "requirePuppeteer": false,
+          "antiCrawler": false,
+          "supportBT": false,
+          "supportPodcast": false,
+          "supportScihub": false
+        },
+        "location": "blog.ts"
+      }
+    },
+    "name": "Next.js",
+    "url": "nextjs.org"
+  },
   "nga": {
     "routes": {
       "/forum/:fid/:recommend?": {
@@ -42857,6 +42883,27 @@
         ],
         "description": "There is an optional query parameter called `properties=` that can be used to customize field mapping. There are three built-in fields: author, pubTime and link, which can be used to add additional information.\n\n  For example, if you have set up three properties in your database - \"Publish Time\", \"Author\", and \"Original Article Link\" - then execute the following JavaScript code to get the result for the properties parameter.\n\n  ```js\n  encodeURIComponent(JSON.stringify({\"pubTime\": \"Publish Time\", \"author\": \"Author\", \"link\": \"Original Article Link\"}))\n  ```\n\n  There is an optional query parameter called `query=` that can be used to customize the search rules for your database, such as custom sorting and filtering rules.\n\n  please refer to the [Notion API documentation](https://developers.notion.com/reference/post-database-query) and execute `encodeURIComponent(JSON.stringify(custom rules))` to provide the query parameter.",
         "location": "database.ts"
+      },
+      "/release": {
+        "name": "Release",
+        "path": "/release",
+        "url": "notion.so/releases",
+        "example": "/notion/release",
+        "categories": [
+          "program-update"
+        ],
+        "maintainers": [
+          "equt"
+        ],
+        "features": {
+          "requireConfig": false,
+          "requirePuppeteer": false,
+          "antiCrawler": false,
+          "supportBT": false,
+          "supportPodcast": false,
+          "supportScihub": false
+        },
+        "location": "release.ts"
       }
     },
     "name": "Notion",
@@ -49736,6 +49783,32 @@
     "categories": [
       "program-update"
     ]
+  },
+  "react": {
+    "routes": {
+      "/blog": {
+        "path": "/blog",
+        "name": "Blog",
+        "categories": [
+          "blog"
+        ],
+        "maintainers": [
+          "equt"
+        ],
+        "example": "/react/blog",
+        "features": {
+          "requireConfig": false,
+          "requirePuppeteer": false,
+          "antiCrawler": false,
+          "supportBT": false,
+          "supportPodcast": false,
+          "supportScihub": false
+        },
+        "location": "blog.ts"
+      }
+    },
+    "name": "React",
+    "url": "react.dev"
   },
   "reactiflux": {
     "routes": {
@@ -60141,6 +60214,45 @@
     },
     "name": "The Ring of Wonder",
     "url": "trow.cc"
+  },
+  "tsdm39": {
+    "routes": {
+      "/bd/:type?": {
+        "path": "/bd/:type?",
+        "name": "BD",
+        "categories": [
+          "anime"
+        ],
+        "maintainers": [
+          "equt"
+        ],
+        "example": "/tsdm39/bd",
+        "parameters": {
+          "type": "BD type, checkout the table below for details"
+        },
+        "features": {
+          "requireConfig": [
+            {
+              "name": "TSDM39_COOKIES",
+              "optional": false,
+              "description": "天使动漫论坛登陆后的 cookie 值，可在浏览器控制台通过 `document.cookie` 获取。"
+            }
+          ],
+          "requirePuppeteer": false,
+          "antiCrawler": false,
+          "supportBT": false,
+          "supportPodcast": false,
+          "supportScihub": false
+        },
+        "description": "| 720P | 1080P | BDMV | 4K | AV1 |\n| :--: | :--: | :--: | :--: | :--: |\n| 403 | 404 | 405 | 4130 | 5815 |",
+        "location": "bd.ts"
+      }
+    },
+    "name": "天使动漫论坛",
+    "url": "www.tsdm39.com",
+    "categories": [
+      "anime"
+    ]
   },
   "tsinghua": {
     "routes": {

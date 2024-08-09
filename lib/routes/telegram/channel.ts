@@ -1,4 +1,4 @@
-import { Route } from '@/types';
+import { Route, ViewType } from '@/types';
 import { getCurrentPath } from '@/utils/helpers';
 import cache from '@/utils/cache';
 import { config } from '@/config';
@@ -58,7 +58,8 @@ const mediaTagDict = {
 export const route: Route = {
     path: '/channel/:username/:routeParams?',
     categories: ['social-media', 'popular'],
-    example: '/telegram/channel/awesomeDIYgod/searchQuery=twitter',
+    view: ViewType.SocialMedia,
+    example: '/telegram/channel/awesomeRSSHub',
     parameters: {
         username: 'channel username',
         routeParams: `extra parameters, see the table below
@@ -427,7 +428,9 @@ async function handler(ctx) {
                                 const background = $node.css('background-image');
                                 const backgroundUrl = background && background.match(/url\('(.*)'\)/);
                                 const backgroundUrlSrc = backgroundUrl && backgroundUrl[1];
-                                tag_media += backgroundUrlSrc ? `<img src="${backgroundUrlSrc}">` : '';
+                                const width = Number.parseFloat($node.css('width') || '0');
+                                const height = ((Number.parseFloat($node.find('.tgme_widget_message_photo').css('padding-top') || '0') / 100) * width).toFixed(2);
+                                tag_media += backgroundUrlSrc ? `<img width="${width}" height="${height}" src="${backgroundUrlSrc}">` : '';
                             }
                             if (tag_media) {
                                 tag_media_all += tag_media;

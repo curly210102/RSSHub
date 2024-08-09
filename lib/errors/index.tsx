@@ -15,8 +15,12 @@ export const errorHandler: ErrorHandler = (error, ctx) => {
     const hasMatchedRoute = matchedRoute !== '/*';
 
     const debug = getDebugInfo();
-    if (ctx.res.headers.get('RSSHub-Cache-Status')) {
-        debug.hitCache++;
+    try {
+        if (ctx.res.headers.get('RSSHub-Cache-Status')) {
+            debug.hitCache++;
+        }
+    } catch {
+        // ignore
     }
     debug.error++;
 
@@ -65,7 +69,7 @@ export const errorHandler: ErrorHandler = (error, ctx) => {
     logger.error(`Error in ${requestPath}: ${message}`);
     requestMetric.error({ path: requestPath, method: ctx.req.method, status: ctx.res.status });
 
-    return config.isPackage
+    return config.isPackage || ctx.req.query('format') === 'json'
         ? ctx.json({
               error: {
                   message: error.message ?? error,

@@ -1,9 +1,10 @@
+import { load } from 'cheerio';
+import iconv from 'iconv-lite';
+
 import cache from '@/utils/cache';
 import got from '@/utils/got';
-import iconv from 'iconv-lite';
-import { load } from 'cheerio';
-import timezone from '@/utils/timezone';
 import { parseDate } from '@/utils/parse-date';
+import timezone from '@/utils/timezone';
 
 export async function loadDetailPage(link) {
     const response = await got.get(link, {
@@ -19,11 +20,11 @@ export async function loadDetailPage(link) {
             .replaceAll(/，免费下载，迅雷下载|，6v电影/g, ''),
         description: $('meta[name="description"]').attr('content'),
         enclosure_urls: $('table td')
-            .map((i, e) => ({
+            .toArray()
+            .map((e) => ({
                 title: $(e).text().replace('磁力：', ''),
                 magnet: $(e).find('a').attr('href'),
             }))
-            .toArray()
             .filter((item) => item.magnet?.includes('magnet')),
     };
 }
@@ -41,7 +42,7 @@ export async function processItems(ctx, baseURL, exclude) {
         list.map((item) => {
             const link = $(item).find('a');
             const href = link.attr('href');
-            const pubDate = timezone(parseDate($(item).find('span').text().replaceAll(/[[\]]/g, ''), 'MM-DD'), +8);
+            const pubDate = timezone(parseDate($(item).find('span').text().replaceAll(/[[\]]/g, ''), 'MM-DD'), 8);
             const text = link.text();
 
             if (href === undefined) {

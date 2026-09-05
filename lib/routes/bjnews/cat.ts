@@ -1,5 +1,7 @@
-import { Route } from '@/types';
 import { load } from 'cheerio';
+import pMap from 'p-map';
+
+import type { Route } from '@/types';
 import ofetch from '@/utils/ofetch';
 
 import { fetchArticle } from './utils';
@@ -34,7 +36,7 @@ async function handler(ctx) {
             category: $(a).parent().find('.source').text().trim(),
         }));
 
-    const out = await Promise.all(list.map((item) => fetchArticle(item)));
+    const out = await pMap(list, (item) => fetchArticle(item), { concurrency: 2 });
     return {
         title: `新京报 - 分类 - ${$('.cur').text().trim()}`,
         link: url,

@@ -1,11 +1,23 @@
-import { Route } from '@/types';
-import { getSubPath } from '@/utils/common-utils';
-import cache from '@/utils/cache';
-import got from '@/utils/got';
 import { load } from 'cheerio';
-import timezone from '@/utils/timezone';
+import Parser from 'rss-parser';
+
+import { config } from '@/config';
+import type { DataItem, Route } from '@/types';
+import cache from '@/utils/cache';
+import { getSubPath } from '@/utils/common-utils';
+import got from '@/utils/got';
 import { parseDate } from '@/utils/parse-date';
-import parser from '@/utils/rss-parser';
+import timezone from '@/utils/timezone';
+
+const parser = new Parser({
+    customFields: {
+        item: ['magnet'],
+    },
+    headers: {
+        'User-Agent': config.ua,
+    },
+    defaultRSS: 0.9,
+});
 
 export const route: Route = {
     path: '/cn/*',
@@ -14,11 +26,11 @@ export const route: Route = {
     maintainers: ['nczitzk'],
     handler,
     description: `::: tip
-  如 [中国 经济 日经中文网](https://cn.nikkei.com/china/ceconomy.html) 的 URL 为 \`https://cn.nikkei.com/china/ceconomy.html\` 对应路由为 [\`/nikkei/cn/cn/china/ceconomy\`](https://rsshub.app/nikkei/cn/cn/china/ceconomy)
+如 [中国 经济 日经中文网](https://cn.nikkei.com/china/ceconomy.html) 的 URL 为 \`https://cn.nikkei.com/china/ceconomy.html\` 对应路由为 [\`/nikkei/cn/cn/china/ceconomy\`](https://rsshub.app/nikkei/cn/cn/china/ceconomy)
 
-  如 [中國 經濟 日經中文網](https://zh.cn.nikkei.com/china/ceconomy.html) 的 URL 为 \`https://zh.cn.nikkei.com/china/ceconomy.html\` 对应路由为 [\`/nikkei/cn/zh/china/ceconomy\`](https://rsshub.app/nikkei/cn/zh/china/ceconomy)
+如 [中國 經濟 日經中文網](https://zh.cn.nikkei.com/china/ceconomy.html) 的 URL 为 \`https://zh.cn.nikkei.com/china/ceconomy.html\` 对应路由为 [\`/nikkei/cn/zh/china/ceconomy\`](https://rsshub.app/nikkei/cn/zh/china/ceconomy)
 
-  特别地，当 \`path\` 填入 \`rss\` 后（如路由为 [\`/nikkei/cn/cn/rss\`](https://rsshub.app/nikkei/cn/cn/rss)），此时返回的是 [官方 RSS 的内容](https://cn.nikkei.com/rss.html)
+特别地，当 \`path\` 填入 \`rss\` 后（如路由为 [\`/nikkei/cn/cn/rss\`](https://rsshub.app/nikkei/cn/cn/rss)），此时返回的是 [官方 RSS 的内容](https://cn.nikkei.com/rss.html)
 :::`,
     radar: [
         {
@@ -27,11 +39,11 @@ export const route: Route = {
             target: (params) => {
                 if (params.category && params.type) {
                     return `/nikkei/cn/cn/${params.category}/${params.type.replace('.html', '')}`;
-                } else if (params.category && !params.type) {
-                    return `/nikkei/cn/cn/${params.category.replace('.html', '')}`;
-                } else {
-                    return `/nikkei/cn/cn`;
                 }
+                if (params.category && !params.type) {
+                    return `/nikkei/cn/cn/${params.category.replace('.html', '')}`;
+                }
+                return '/nikkei/cn/cn';
             },
         },
         {
@@ -40,21 +52,21 @@ export const route: Route = {
             target: (params) => {
                 if (params.category && params.type) {
                     return `/nikkei/cn/zh/${params.category}/${params.type.replace('.html', '')}`;
-                } else if (params.category && !params.type) {
-                    return `/nikkei/cn/zh/${params.category.replace('.html', '')}`;
-                } else {
-                    return `/nikkei/cn/zh`;
                 }
+                if (params.category && !params.type) {
+                    return `/nikkei/cn/zh/${params.category.replace('.html', '')}`;
+                }
+                return '/nikkei/cn/zh';
             },
         },
     ],
 };
 
 async function handler(ctx) {
-    let language = '';
+    let language: string;
     let path = getSubPath(ctx);
 
-    if (/^\/cn\/(cn|zh)/.test(path)) {
+    if (/^\/cn\/(?:cn|zh)/.test(path)) {
         language = path.match(/^\/cn\/(cn|zh)/)[1];
         path = path.match(new RegExp(String.raw`\/cn\/` + language + '(.*)'))[1];
     } else {
@@ -69,8 +81,8 @@ async function handler(ctx) {
 
     let officialFeed;
 
-    let items = [],
-        $;
+    let items: DataItem[];
+    let $;
 
     if (isOfficialRSS) {
         officialFeed = await parser.parseURL(currentUrl);
@@ -86,23 +98,30 @@ async function handler(ctx) {
 
         $ = load(response.data);
 
+        const seenLinks = new Set<string>();
         items = $('dt a')
             .toArray()
             .map((item) => {
-                item = $(item);
+                const $item = $(item);
 
                 return {
-                    title: item.text(),
-                    link: new URL(item.attr('href'), currentUrl).href,
+                    title: $item.text(),
+                    link: new URL($item.attr('href'), currentUrl).href,
                 };
             })
-            .reduce((prev, cur) => (prev.length && prev.at(-1).link === cur.link ? prev : [...prev, cur]), [])
+            .filter((item) => {
+                if (seenLinks.has(item.link)) {
+                    return false;
+                }
+                seenLinks.add(item.link);
+                return true;
+            })
             .slice(0, limit);
     }
 
     items = await Promise.all(
         items.map((item) =>
-            cache.tryGet(item.link, async () => {
+            cache.tryGet(item.link!, async () => {
                 const detailResponse = await got({
                     method: 'get',
                     url: `${item.link}?print=1`,
@@ -114,14 +133,11 @@ async function handler(ctx) {
                 divs.first().remove();
                 divs.last().remove();
 
-                item.pubDate = timezone(parseDate(item.link.match(/\/\d+-(.*?)\.html/)[1], 'YYYY-MM-DD-HH-mm-ss'), +9);
+                item.pubDate = timezone(parseDate(item.link!.match(/\/\d+-(.*?)\.html/)![1], 'YYYY-MM-DD-HH-mm-ss'), 9);
 
                 item.author = content('meta[name="author"]').attr('content');
-                item.title = item.title ?? content('meta[name="twitter:title"]').attr('content');
-                item.description = content('#contentDiv')
-                    .html()
-                    ?.replace(/&nbsp;/g, '')
-                    .replaceAll('<p></p>', '');
+                item.title ??= content('meta[name="twitter:title"]').attr('content')!;
+                item.description = content('#contentDiv').html()?.replaceAll('&nbsp;', '').replaceAll('<p></p>', '');
 
                 return item;
             })

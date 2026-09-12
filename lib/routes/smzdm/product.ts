@@ -1,8 +1,12 @@
-import { Route, DataItem } from '@/types';
-import { ofetch } from 'ofetch';
 import { load } from 'cheerio';
+
+import { config } from '@/config';
+import ConfigNotFoundError from '@/errors/types/config-not-found';
+import type { Data, DataItem, Route } from '@/types';
 import cache from '@/utils/cache';
-import got from '@/utils/got';
+import ofetch from '@/utils/ofetch';
+
+import { getHeaders } from './utils';
 
 export const route: Route = {
     path: '/product/:id',
@@ -10,7 +14,12 @@ export const route: Route = {
     example: '/smzdm/product/zm5vzpe',
     parameters: { id: '商品 id，网址上直接可以看到' },
     features: {
-        requireConfig: false,
+        requireConfig: [
+            {
+                name: 'SMZDM_COOKIE',
+                description: '什么值得买登录后的 Cookie 值',
+            },
+        ],
         requirePuppeteer: false,
         antiCrawler: false,
         supportBT: false,
@@ -28,50 +37,57 @@ export const route: Route = {
     handler,
 };
 
-async function handler(ctx) {
+async function handler(ctx): Promise<Data> {
+    if (!config.smzdm.cookie) {
+        throw new ConfigNotFoundError('什么值得买排行榜 is disabled due to the lack of SMZDM_COOKIE');
+    }
+
     const link = `https://wiki.smzdm.com/p/${ctx.req.param('id')}`;
 
-    const response = await ofetch(link);
+    const response = await ofetch(link, {
+        headers: getHeaders(),
+    });
     const $ = load(response);
     const title = $('title').text();
 
     // get simple info from list
     const items: DataItem[] = $('ul#feed-main-list li')
-        .map(function () {
-            const altText = $(this).find('img').attr('alt');
-            const link = $(this).find('h5.feed-block-title a').attr('href');
-            const price = $(this).find('.z-highlight').text();
+        .toArray()
+        .map((elem) => {
+            const altText = $(elem).find('img').attr('alt');
+            const link = $(elem).find('h5.feed-block-title a').attr('href');
+            const price = $(elem).find('.z-highlight').text();
             const title = altText + ' ' + price;
-            const description = $(this).find('.feed-block-descripe').text().replaceAll(/\s+/g, '');
+            const description = $(elem).find('.feed-block-descripe').text().replaceAll(/\s+/g, '');
 
             return {
                 title,
                 link,
                 description,
             };
-        })
-        .toArray();
+        });
 
     // get detail info from each item
     const out = await Promise.all(
         items.map((item) =>
-            cache.tryGet(item.link, async () => {
-                const { data: response } = await got(item.link);
+            cache.tryGet(item.link!, async (): Promise<any> => {
+                const response = await ofetch(item.link!, {
+                    headers: getHeaders(),
+                });
                 const $ = load(response);
 
                 // filter outdated articles
                 if ($('span.old').length > 0) {
                     return null;
-                } else {
-                    const pubDate = $('meta[name="weibo:webpage:create_at"]').attr('content');
-                    item.pubDate = pubDate;
-
-                    if (item.description === '阅读全文') {
-                        item.description = $('p[itemprop="description"]').first().html() as string;
-                    }
-
-                    return item;
                 }
+                const pubDate = $('meta[name="weibo:webpage:create_at"]').attr('content');
+                item.pubDate = pubDate;
+
+                if (item.description === '阅读全文') {
+                    item.description = $('p[itemprop="description"]').first().html() ?? undefined;
+                }
+
+                return item;
             })
         )
     );

@@ -1,11 +1,12 @@
-import { Route, ViewType } from '@/types';
-import cache from '@/utils/cache';
-import { getToken } from './token';
-import getRanking from './api/get-ranking';
 import { config } from '@/config';
-import pixivUtils from './utils';
-import { parseDate } from '@/utils/parse-date';
 import ConfigNotFoundError from '@/errors/types/config-not-found';
+import type { Route } from '@/types';
+import { ViewType } from '@/types';
+import { parseDate } from '@/utils/parse-date';
+
+import getRanking from './api/get-ranking';
+import { getToken } from './token';
+import pixivUtils from './utils';
 
 const titles = {
     day: 'pixiv 日排行',
@@ -60,7 +61,7 @@ const alias = {
 
 export const route: Route = {
     path: '/ranking/:mode/:date?',
-    categories: ['social-media', 'popular'],
+    categories: ['social-media'],
     view: ViewType.Pictures,
     example: '/pixiv/ranking/week',
     parameters: {
@@ -124,6 +125,7 @@ export const route: Route = {
                     label: 'R-18G rank',
                 },
             ],
+            default: 'day',
         },
         date: 'format: `2018-4-25`',
     },
@@ -134,6 +136,7 @@ export const route: Route = {
         supportBT: false,
         supportPodcast: false,
         supportScihub: false,
+        nsfw: true,
     },
     name: 'Rankings',
     maintainers: ['EYHN'],
@@ -148,7 +151,7 @@ async function handler(ctx) {
     const mode = alias[ctx.req.param('mode')] ?? ctx.req.param('mode');
     const date = ctx.req.param('date') ? new Date(ctx.req.param('date')) : new Date();
 
-    const token = await getToken(cache.tryGet);
+    const token = await getToken();
     if (!token) {
         throw new ConfigNotFoundError('pixiv not login');
     }

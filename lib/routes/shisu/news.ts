@@ -1,7 +1,8 @@
-import { Route } from '@/types';
+import { load } from 'cheerio';
+
+import type { Route } from '@/types';
 import cache from '@/utils/cache';
 import ofetch from '@/utils/ofetch';
-import { load } from 'cheerio';
 import { parseDate } from '@/utils/parse-date';
 
 const url = 'https://news.shisu.edu.cn';
@@ -30,8 +31,8 @@ export const route: Route = {
     maintainers: ['Duuckjing'],
     handler,
     description: `| 首页 | 特稿    | 学术      | 教学       | 国际          | 校园   | 人物   | 视讯       | 公告   |
-  | ---- | ------- | --------- | ---------- | ------------- | ------ | ------ | ---------- | ------ |
-  | news | gazette | research- | academics- | international | campus | people | multimedia | notice |`,
+| ---- | ------- | --------- | ---------- | ------------- | ------ | ------ | ---------- | ------ |
+| news | gazette | research- | academics- | international | campus | people | multimedia | notice |`,
 };
 
 async function handler(ctx) {
@@ -60,7 +61,7 @@ async function handler(ctx) {
                 .map((i0) => {
                     const i = $(i0);
                     return {
-                        title: i.find('h3>a').attr('title')?.trim(),
+                        title: i.find('h3>a').attr('title'),
                         link: `${url}${i.find('h3>a').attr('href')}`,
                         category: i.find('p>span:nth-child(1)').text(),
                     };

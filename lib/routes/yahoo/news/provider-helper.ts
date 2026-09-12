@@ -1,7 +1,7 @@
-import { Route } from '@/types';
-import cache from '@/utils/cache';
-import { getProviderList } from './utils';
 import InvalidParameterError from '@/errors/types/invalid-parameter';
+import type { Route } from '@/types';
+
+import { getProviderList } from './utils';
 
 export const route: Route = {
     path: '/news/providers/:region/list',
@@ -18,7 +18,10 @@ export const route: Route = {
     },
     radar: [
         {
-            source: ['hk.news.yahoo.com/', 'tw.news.yahoo.com/'],
+            source: ['hk.news.yahoo.com/'],
+        },
+        {
+            source: ['tw.news.yahoo.com/'],
         },
     ],
     name: '新聞來源列表',
@@ -32,7 +35,7 @@ async function handler(ctx) {
         throw new InvalidParameterError(`Unknown region: ${region}`);
     }
 
-    const providerList = await getProviderList(region, cache.tryGet);
+    const providerList = await getProviderList(region);
 
     const items = providerList.map((provider) => ({
         ...provider,

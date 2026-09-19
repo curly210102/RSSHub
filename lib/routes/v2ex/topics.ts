@@ -1,10 +1,11 @@
-import { Route, ViewType } from '@/types';
+import type { Route } from '@/types';
+import { ViewType } from '@/types';
 import got from '@/utils/got';
 import { parseDate } from '@/utils/parse-date';
 
 export const route: Route = {
     path: '/topics/:type',
-    categories: ['bbs', 'popular'],
+    categories: ['bbs'],
     view: ViewType.Articles,
     example: '/v2ex/topics/latest',
     parameters: {
@@ -20,6 +21,7 @@ export const route: Route = {
                     label: '最新主题',
                 },
             ],
+            default: 'hot',
         },
     },
     features: {

@@ -1,10 +1,12 @@
-import { DataItem, Route, Data } from '@/types';
-import cache from '@/utils/cache';
-import { joinUrl } from './utils';
-import { parseDate } from '@/utils/parse-date';
 import { load } from 'cheerio';
+
+import type { Data, DataItem, Route } from '@/types';
+import cache from '@/utils/cache';
 import got from '@/utils/got';
+import { parseDate } from '@/utils/parse-date';
 import timezone from '@/utils/timezone';
+
+import { joinUrl } from './utils';
 
 export const route: Route = {
     path: '/dxy/:code',
@@ -30,8 +32,8 @@ export const route: Route = {
     handler,
     url: 'swpu.edu.cn/',
     description: `| 栏目 | 学院新闻 | 学院通知 |
-  | ---- | -------- | -------- |
-  | 代码 | 1122     | 1156     |`,
+| ---- | -------- | -------- |
+| 代码 | 1122     | 1156     |`,
 };
 
 async function handler(ctx): Promise<Data> {
@@ -43,39 +45,40 @@ async function handler(ctx): Promise<Data> {
     const $ = load(res.data);
 
     let title = $('title').text();
-    title = title.substring(0, title.indexOf('-'));
+    title = title.slice(0, title.indexOf('-'));
 
     // 获取标题、时间及链接
     const items: DataItem[] = $('tr[height="20"]')
         .toArray()
         .map((elem) => ({
             title: $('a[title]', elem).text().trim(),
-            pubDate: timezone(parseDate($('td:eq(1)', elem).text(), 'YYYY年MM月DD日'), +8),
+            pubDate: timezone(parseDate($('td:eq(1)', elem).text(), 'YYYY年MM月DD日'), 8),
             link: joinUrl('https://www.swpu.edu.cn/dxy/', $('a[title]', elem).attr('href')),
         }));
 
     // 请求全文
     const out = await Promise.all(
-        items.map(
-            async (item) =>
-                (await cache.tryGet(item.link!, async () => {
-                    const resp = await got.get(item.link);
-                    const $ = load(resp.data);
-                    if ($('title').text().startsWith('系统提示')) {
-                        item.author = '系统';
-                        item.description = '无权访问';
-                    } else {
-                        item.author = '电气信息学院';
-                        item.description = $('.v_news_content').html()!;
-                        for (const elem of $('.v_news_content p')) {
-                            if ($(elem).css('text-align') === 'right') {
-                                item.author = $(elem).text();
-                                break;
-                            }
+        items.map((item) =>
+            cache.tryGet(item.link!, async () => {
+                const resp = await got.get(item.link);
+                const $ = load(resp.data);
+                if ($('title').text().startsWith('系统提示')) {
+                    item.author = '系统';
+                    item.description = '无权访问';
+                } else {
+                    item.author = '电气信息学院';
+                    item.description = $('.v_news_content').html()!;
+                    for (const elem of $('.v_news_content p')) {
+                        if ($(elem).css('text-align') !== 'right') {
+                            continue;
                         }
+
+                        item.author = $(elem).text();
+                        break;
                     }
-                    return item;
-                })) as DataItem
+                }
+                return item;
+            })
         )
     );
 

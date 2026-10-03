@@ -1,10 +1,11 @@
+import { load } from 'cheerio';
+
 import cache from '@/utils/cache';
 import ofetch from '@/utils/ofetch';
 import { parseDate } from '@/utils/parse-date';
-import { load } from 'cheerio';
 
 export function removeDuplicateByKey(items, key: string) {
-    return [...new Map(items.map((x) => [x[key], x])).values()];
+    return new Map(items.map((x) => [x[key], x])).values().toArray();
 }
 
 export function fetchArticle(item) {
@@ -12,6 +13,19 @@ export function fetchArticle(item) {
         const data = await ofetch(item.link);
         const $ = load(data);
         if ($('#link-ld-json').length === 0) {
+            const gtmRaw = $('meta[name="gtm-dataLayer"]').attr('content');
+            if (gtmRaw) {
+                const gtmParsed = JSON.parse(gtmRaw);
+                return {
+                    title: gtmParsed.headline,
+                    pubDate: parseDate(gtmParsed.publication_date),
+                    description: $('div.RichTextStoryBody').html() || $(':is(.VideoLead, .VideoPage-pageSubHeading)').html(),
+                    category: gtmParsed.tag_array.split(','),
+                    guid: $("meta[name='brightspot.contentId']").attr('content'),
+                    author: gtmParsed.author,
+                    ...item,
+                };
+            }
             return item;
         }
         const rawLdjson = JSON.parse($('#link-ld-json').text());
@@ -23,6 +37,7 @@ export function fetchArticle(item) {
             $('div.Enhancement').remove();
             const section = $("meta[property='article:section']").attr('content');
             return {
+                ...item,
                 title: ldjson.headline,
                 pubDate: parseDate(ldjson.datePublished),
                 updated: parseDate(ldjson.dateModified),
@@ -30,19 +45,21 @@ export function fetchArticle(item) {
                 category: [...(section ? [section] : []), ...(ldjson.keywords ?? [])],
                 guid: $("meta[name='brightspot.contentId']").attr('content'),
                 author: ldjson.author,
-                ...item,
-            };
-        } else {
-            // Live
-            ldjson = rawLdjson;
-
-            return {
-                category: ldjson.keywords,
-                pubDate: parseDate(ldjson.coverageStartTime),
-                description: ldjson.description,
-                guid: $("meta[name='brightspot.contentId']").attr('content'),
-                ...item,
             };
         }
+        // Live
+        ldjson = rawLdjson;
+
+        const url = new URL(item.link);
+        const description = url.hash ? $(url.hash).parent().find('.LiveBlogPost-body').html() : ldjson.description;
+        const pubDate = url.hash ? parseDate(Number($(url.hash).parent().attr('data-posted-date-timestamp'))) : parseDate(ldjson.coverageStartTime);
+
+        return {
+            ...item,
+            category: ldjson.keywords,
+            pubDate,
+            description,
+            guid: $("meta[name='brightspot.contentId']").attr('content'),
+        };
     });
 }

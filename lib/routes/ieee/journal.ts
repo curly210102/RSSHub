@@ -1,10 +1,11 @@
-import { Route } from '@/types';
-import { getCurrentPath } from '@/utils/helpers';
-const __dirname = getCurrentPath(import.meta.url);
+import { load } from 'cheerio';
 
+import type { Route } from '@/types';
+import cache from '@/utils/cache';
 import got from '@/utils/got';
-import path from 'node:path';
-import { art } from '@/utils/render';
+import ofetch from '@/utils/ofetch';
+
+import { renderDescription } from './templates/description';
 
 const ieeeHost = 'https://ieeexplore.ieee.org';
 
@@ -25,25 +26,41 @@ async function handler(ctx) {
     const publicationNumber = ctx.req.param('punumber');
     const earlyAccess = !!ctx.req.param('earlyAccess');
 
-    const metadata = await fetchMetadata(publicationNumber);
-    const { displayTitle, currentIssue, preprintIssue, coverImagePath } = metadata;
+    const { displayTitle, currentIssue, preprintIssue, coverImagePath } = await fetchMetadata(publicationNumber);
     const { issueNumber, volume } = earlyAccess ? preprintIssue : currentIssue;
 
     const tocData = await fetchTOCData(publicationNumber, issueNumber);
     const list = tocData.records.map((item) => {
         const mappedItem = mapRecordToItem(volume)(item);
 
-        mappedItem.description = art(path.join(__dirname, 'templates/description.art'), {
-            item: mappedItem,
-        });
-
         return mappedItem;
     });
+
+    const items = await Promise.all(
+        list.map((item) =>
+            cache.tryGet(item.link, async () => {
+                const response = await ofetch(`https://ieeexplore.ieee.org${item.link}`);
+
+                const $ = load(response);
+
+                const target = $('script[type="text/javascript"]:contains("xplGlobal.document.metadata")');
+                const code = target.text();
+
+                // 捕获等号右侧的 JSON（最小匹配直到紧随的分号）
+                const m = code.match(/xplGlobal\.document\.metadata\s*=\s*(\{[\s\S]*?\})\s*;/);
+                const metadata: { abstract?: string } = m ? JSON.parse(m[1]) : {};
+                item.abstract = metadata.abstract ?? ' ';
+                item.description = renderDescription(item);
+
+                return item;
+            })
+        )
+    );
 
     return {
         title: displayTitle,
         link: `${ieeeHost}/xpl/tocresult.jsp?isnumber=${issueNumber}`,
-        item: list,
+        item: items,
         image: `${ieeeHost}${coverImagePath}`,
     };
 }

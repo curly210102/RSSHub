@@ -59,13 +59,13 @@ describe('test camelcase keys', () => {
     });
 
     it('case 4: nullable value', () => {
-        let value = null as any;
+        let value: number | null | undefined = null;
         expect(camelcaseKeys(value)).toBe(value);
 
         value = undefined;
         expect(camelcaseKeys(value)).toBe(value);
 
-        value = Number.NaN;
+        value = NaN;
         expect(camelcaseKeys(value)).toBe(value);
     });
 
@@ -76,9 +76,9 @@ describe('test camelcase keys', () => {
             },
             null,
             undefined,
-            +0,
+            0,
             -0,
-            Number.POSITIVE_INFINITY,
+            Infinity,
             {
                 a_b: 1,
             },
@@ -90,9 +90,9 @@ describe('test camelcase keys', () => {
             },
             null,
             undefined,
-            +0,
+            0,
             -0,
-            Number.POSITIVE_INFINITY,
+            Infinity,
             {
                 aB: 1,
             },
